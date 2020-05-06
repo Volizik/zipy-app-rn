@@ -12,8 +12,8 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {Platform, StyleSheet} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
-import {HomeScreen} from "./components/Screens/HomeScreen";
-import {SettingsScreen} from "./components/Screens/SettingsScreen";
+import {HomeScreen} from "./src/Screens/HomeScreen";
+import {SettingsScreen} from "./src/Screens/SettingsScreen";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 
 declare const global: {HermesInternal: null | {}};
@@ -27,7 +27,7 @@ const App = () => {
               <NavigationContainer>
                   <Tab.Navigator>
                       <Tab.Screen name="Home" component={HomeScreen} />
-                      <Tab.Screen name="Settings" component={SettingsScreen} />
+                      <Tab.Screen name="Tracking" component={SettingsScreen} />
                   </Tab.Navigator>
               </NavigationContainer>
           ) : <HomeScreen/>}

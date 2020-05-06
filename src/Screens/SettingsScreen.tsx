@@ -1,12 +1,13 @@
 import React, {FC} from 'react';
 import {View, Text, StyleSheet, Platform} from 'react-native';
+import {WebView} from "react-native-webview";
 
 export const SettingsScreen: FC = () => {
     return (
-        <View
-            style={styles.container}>
-            <Text>Settings!</Text>
-        </View>
+        <WebView
+            style={styles.container}
+            source={{ uri: 'https://www.zipy.co.il/tracking' }}
+        />
     );
 }
 
