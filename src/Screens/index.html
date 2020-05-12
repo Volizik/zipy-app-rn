@@ -13,9 +13,10 @@
 
 <button>Click me</button>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
 <script>
     function facebookAppLogin(token) {
-        document.write(`facebook login success! ${token}`)
+        axios.get(`https://graph.facebook.com/me?fields=name,id,email&access_token=${token}`).then((res) => document.write(JSON.stringify(res.data)));
     }
 
     document.addEventListener('DOMContentLoaded', () => {

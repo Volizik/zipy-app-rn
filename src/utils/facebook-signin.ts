@@ -2,7 +2,7 @@ import {AccessToken, LoginManager} from "react-native-fbsdk";
 
 export type FacebookSignIn = (token: AccessToken | null) => void;
 
-export const FacebookSignIn = (callback: FacebookSignIn): void => {
+export const facebookSignIn = (callback: FacebookSignIn): void => {
     LoginManager.logInWithPermissions(['public_profile', 'email']).then(
         async function (result) {
             if (result.isCancelled) {
@@ -13,6 +13,7 @@ export const FacebookSignIn = (callback: FacebookSignIn): void => {
                     result?.grantedPermissions?.toString(),
                 );
                 const accessToken = await AccessToken.getCurrentAccessToken();
+
                 callback(accessToken)
             }
         },
