@@ -9,18 +9,24 @@
  */
 
 import 'react-native-gesture-handler';
-import React from 'react';
-import {Platform, StyleSheet} from "react-native";
+import React, {useEffect} from 'react';
+import {Platform} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
 import {HomeScreen} from "./src/Screens/HomeScreen";
 import {SettingsScreen} from "./src/Screens/SettingsScreen";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {googleSignInConfigure} from "./src/utils/google-signin";
 
 declare const global: {HermesInternal: null | {}};
 
 const Tab = createBottomTabNavigator();
 
 const App = () => {
+
+    useEffect(() => {
+        googleSignInConfigure();
+    })
+
   return (
       <>
           {Platform.OS === 'ios' ? (

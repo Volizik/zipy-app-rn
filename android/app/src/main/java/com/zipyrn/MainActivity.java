@@ -1,4 +1,4 @@
-package com.il.zipy;
+package com.app.zipy;
 
 import com.facebook.react.ReactActivity;
 
