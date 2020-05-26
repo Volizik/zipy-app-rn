@@ -1,13 +1,11 @@
 import { GoogleSignin, statusCodes, User } from '@react-native-community/google-signin';
+import {SignInCallback} from "../types";
 
-export type GoogleSignInCallback = (userInfo: User) => void;
-
-export const googleSignIn = async (callback: GoogleSignInCallback): Promise<void> => {
-
+export const googleSignIn = async (callback: SignInCallback): Promise<void> => {
     try {
         await GoogleSignin.hasPlayServices();
-        const userInfo = await GoogleSignin.signIn();
-        callback(userInfo);
+        const userInfo: User = await GoogleSignin.signIn();
+        callback(userInfo.user.email);
     } catch (error) {
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
             // user cancelled the login flow

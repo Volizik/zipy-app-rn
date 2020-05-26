@@ -1,40 +1,14 @@
-import React, {FC, useEffect, useRef} from 'react';
-import {WebView, WebViewMessageEvent} from 'react-native-webview';
-import {Button, Platform, SafeAreaView, StyleSheet, View} from "react-native";
-import {facebookSignIn} from "../utils/facebook-signin";
-import {googleSignIn, googleSignInConfigure} from "../utils/google-signin";
-import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin';
+import React, {FC} from 'react';
+import {StyleSheet} from "react-native";
+import {WebViewCustom} from "../components/WebViewCustom";
 
 export const HomeScreen: FC = () => {
-
-    const webViewRef = useRef<WebView>(null);
-
-    const onMessageHandler = (event: WebViewMessageEvent) => {
-        const message = JSON.parse(event.nativeEvent.data);
-
-        if (message.type === 'facebookLogin') {
-            facebookSignIn((token) => {
-                webViewRef?.current?.injectJavaScript(`window.facebookAppLogin("${token?.accessToken}")`)
-            });
-        } else if (message.type === 'googleLogin') {
-            googleSignIn((userInfo) => {
-                console.log(userInfo)
-                const name = userInfo.user.name;
-                const email = userInfo.user.email;
-                const id = userInfo.user.id;
-                webViewRef?.current?.injectJavaScript(`window.googleAppLogin("${name}", "${email}", "${id}")`)
-            });
-        }
-    }
-
     return (
-        <WebView
+        <WebViewCustom
             style={styles.container}
-            source={require('./index.html')}
-            onMessage={onMessageHandler}
-            ref={webViewRef}
+            // source={require('./index.html')}
 
-            // source={{ uri: 'https://www.zipy.co.il/' }}
+            source={{ uri: 'https://www.zipy.co.il/' }}
         />
     );
 }

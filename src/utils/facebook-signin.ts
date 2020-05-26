@@ -1,24 +1,37 @@
-import {AccessToken, LoginManager} from "react-native-fbsdk";
+import {AccessToken, LoginManager, UserData} from "react-native-fbsdk";
+import {SignInCallback} from "../types";
 
-export type FacebookSignIn = (token: AccessToken | null) => void;
+export const facebookSignIn = async (callback: SignInCallback): Promise<void> => {
+    try {
+        const loginResult = await LoginManager.logInWithPermissions(['email']);
 
-export const facebookSignIn = (callback: FacebookSignIn): void => {
-    LoginManager.logInWithPermissions(['public_profile', 'email']).then(
-        async function (result) {
-            if (result.isCancelled) {
-                console.log('Login cancelled');
+        if (loginResult.isCancelled) {
+            console.log('Login cancelled');
+        } else {
+            const token = await AccessToken.getCurrentAccessToken();
+
+            if (token !== null) {
+                const userInfo = await fetchUserInfoByToken(token.accessToken);
+
+                if (userInfo?.email) {
+                    callback(userInfo.email);
+                } else {
+                    console.error('facebookSignIn: UserData is undefined');
+                }
             } else {
-                console.log(
-                    'Login success with permissions: ' +
-                    result?.grantedPermissions?.toString(),
-                );
-                const accessToken = await AccessToken.getCurrentAccessToken();
-
-                callback(accessToken)
+                console.error('facebookSignIn: Token is null');
             }
-        },
-        function (error) {
-            console.log('Login fail with error: ' + error);
-        },
-    );
+        }
+    } catch (e) {
+        console.error(`facebookSignIn catch error: ${e.toString()}`);
+    }
 };
+
+const fetchUserInfoByToken = async (token: string): Promise<UserData | undefined> => {
+    try {
+        const response = await fetch(`https://graph.facebook.com/me?fields=email&access_token=${token}`);
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+    }
+}

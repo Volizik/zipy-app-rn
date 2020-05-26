@@ -16,11 +16,11 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
 <script>
-    function facebookAppLogin(token) {
-        axios.get(`https://graph.facebook.com/me?fields=name,id,email&access_token=${token}`).then((res) => document.write(JSON.stringify(res.data)));
+    function facebookAppLogin(email) {
+        document.write(email);
     }
-    function googleAppLogin(name, email, id) {
-        document.write(name, email, id);
+    function googleAppLogin(email) {
+        document.write(email);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -28,13 +28,21 @@
         const gButton = document.querySelector('#google');
 
         fButton.addEventListener('click', () => {
-            window.ReactNativeWebView.postMessage(JSON.stringify({type: 'facebookLogin'}))
+            window.ReactNativeWebView.postMessage(JSON.stringify({type: 'facebook'}))
         })
 
         gButton.addEventListener('click', () => {
-            window.ReactNativeWebView.postMessage(JSON.stringify({type: 'googleLogin'}))
+            window.ReactNativeWebView.postMessage(JSON.stringify({type: 'google'}))
         })
     })
+
+    function mobileSocialLogin(email, type) {
+        if (type === 'facebook') {
+            facebookAppLogin(email);
+        } else if (type === 'google') {
+            googleAppLogin(email);
+        }
+    }
 </script>
 
 </body>
