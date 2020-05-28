@@ -1,11 +1,12 @@
-import { GoogleSignin, statusCodes, User } from '@react-native-community/google-signin';
+import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import {SignInCallback} from "../types";
 
 export const googleSignIn = async (callback: SignInCallback): Promise<void> => {
     try {
         await GoogleSignin.hasPlayServices();
-        const userInfo: User = await GoogleSignin.signIn();
-        callback(userInfo.user.email);
+        await GoogleSignin.signIn();
+        const token = await GoogleSignin.getTokens();
+        callback(token.accessToken);
     } catch (error) {
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
             // user cancelled the login flow
@@ -25,6 +26,7 @@ export const googleSignIn = async (callback: SignInCallback): Promise<void> => {
 
 export const googleSignInConfigure = () => {
     GoogleSignin.configure({
-        webClientId: '586978086502-1f4ka1jb97h370iab7101pighvo9ulif.apps.googleusercontent.com',
+        webClientId: '163697187066.apps.googleusercontent.com',
+        iosClientId: '163697187066-ftlnh870p6ajh43u3m8pcqr69e53dbp8.apps.googleusercontent.com'
     });
 }

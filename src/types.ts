@@ -1,2 +1,2 @@
-export type AuthType = 'google' | 'facebook'
-export type SignInCallback = (email: string) => void;
+export type AuthType = 'googleLogin' | 'facebookLogin'
+export type SignInCallback = (token: string) => void;

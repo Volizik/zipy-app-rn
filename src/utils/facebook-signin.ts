@@ -1,4 +1,4 @@
-import {AccessToken, LoginManager, UserData} from "react-native-fbsdk";
+import {AccessToken, LoginManager} from "react-native-fbsdk";
 import {SignInCallback} from "../types";
 
 export const facebookSignIn = async (callback: SignInCallback): Promise<void> => {
@@ -8,16 +8,10 @@ export const facebookSignIn = async (callback: SignInCallback): Promise<void> =>
         if (loginResult.isCancelled) {
             console.log('Login cancelled');
         } else {
-            const token = await AccessToken.getCurrentAccessToken();
+            const accessToken = await AccessToken.getCurrentAccessToken();
 
-            if (token !== null) {
-                const userInfo = await fetchUserInfoByToken(token.accessToken);
-
-                if (userInfo?.email) {
-                    callback(userInfo.email);
-                } else {
-                    console.error('facebookSignIn: UserData is undefined');
-                }
+            if (accessToken !== null) {
+                callback(accessToken.accessToken);
             } else {
                 console.error('facebookSignIn: Token is null');
             }
@@ -26,12 +20,3 @@ export const facebookSignIn = async (callback: SignInCallback): Promise<void> =>
         console.error(`facebookSignIn catch error: ${e.toString()}`);
     }
 };
-
-const fetchUserInfoByToken = async (token: string): Promise<UserData | undefined> => {
-    try {
-        const response = await fetch(`https://graph.facebook.com/me?fields=email&access_token=${token}`);
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-    }
-}

@@ -26,8 +26,6 @@ static void InitializeFlipper(UIApplication *application) {
 
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <RNGoogleSignin/RNGoogleSignin.h>
-@import Firebase;
 
 
 @implementation AppDelegate
@@ -52,12 +50,22 @@ static void InitializeFlipper(UIApplication *application) {
   [self.window makeKeyAndVisible];
   [[FBSDKApplicationDelegate sharedInstance] application:application
                            didFinishLaunchingWithOptions:launchOptions];
-  [FIRApp configure];
+  [GIDSignIn sharedInstance].clientID = @"163697187066-ftlnh870p6ajh43u3m8pcqr69e53dbp8.apps.googleusercontent.com";
+  [GIDSignIn sharedInstance].delegate = self;
+  
   return YES;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options {
-  return [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options] || [RNGoogleSignin application:application openURL:url options:options];
+  return [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options] ||
+    [[GIDSignIn sharedInstance] handleURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+  return [[GIDSignIn sharedInstance] handleURL:url];
 }
 
 //- (BOOL)application:(UIApplication *)application

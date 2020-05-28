@@ -7,7 +7,6 @@ export const HomeScreen: FC = () => {
         <WebViewCustom
             style={styles.container}
             // source={require('./index.html')}
-
             source={{ uri: 'https://www.zipy.co.il/' }}
         />
     );
