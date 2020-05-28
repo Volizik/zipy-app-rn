@@ -4,6 +4,7 @@ import {AuthType} from "../types";
 import {facebookSignIn} from "../utils/facebook-signin";
 import {googleSignIn} from "../utils/google-signin";
 import {Loader} from "./Loader";
+import {SafeAreaView, StyleSheet} from "react-native";
 
 export const WebViewCustom: FC<WebViewProps> = ({children, ...props}) => {
     const webViewRef = useRef<WebView>(null);
@@ -32,16 +33,28 @@ export const WebViewCustom: FC<WebViewProps> = ({children, ...props}) => {
     `;
 
     return (
-        <>
+        <SafeAreaView style={styles.wrapper} pointerEvents={isLoading ? 'none' : 'auto'}>
             <WebView
+                style={styles.webView}
                 ref={webViewRef}
                 onMessage={onMessageHandler}
                 injectedJavaScript={injectedJavascript}
                 onLoadStart={() => setIsLoading(true)}
-                onLoad={() => setIsLoading(false)}
+                onLoadEnd={() => setIsLoading(false)}
                 {...props}
             />
-            <Loader visible={isLoading}/>
-        </>
+            {isLoading && (
+                <Loader />
+            )}
+        </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+    },
+    webView: {
+        flex: 1,
+    }
+});
