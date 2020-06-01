@@ -1,5 +1,6 @@
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import {SignInCallback} from "../types";
+import {GOOGLE_WEB_CLIENT_ID, GOOGLE_IOS_CLIENT_ID} from 'react-native-dotenv';
 
 export const googleSignIn = async (callback: SignInCallback): Promise<void> => {
     try {
@@ -26,7 +27,7 @@ export const googleSignIn = async (callback: SignInCallback): Promise<void> => {
 
 export const googleSignInConfigure = () => {
     GoogleSignin.configure({
-        webClientId: '163697187066.apps.googleusercontent.com',
-        iosClientId: '163697187066-ftlnh870p6ajh43u3m8pcqr69e53dbp8.apps.googleusercontent.com'
+        webClientId: GOOGLE_WEB_CLIENT_ID,
+        iosClientId: GOOGLE_IOS_CLIENT_ID
     });
 }
