@@ -36,6 +36,7 @@ const App = () => {
           {Platform.OS === 'ios' ? (
               <NavigationContainer>
                   <Tab.Navigator
+                      initialRouteName='Buy Online'
                       screenOptions={({ route }) => ({
                           tabBarIcon: ({ color, size }) => {
                               let iconName: {[key: string]: string} = {
