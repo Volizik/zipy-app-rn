@@ -59,6 +59,9 @@ const App = () => {
                       tabBarOptions={{
                           activeTintColor: '#7866ff',
                           inactiveTintColor: '#8D8D8F',
+                          labelStyle: {
+                              fontSize: 12
+                          },
                       }}
 
                   >
