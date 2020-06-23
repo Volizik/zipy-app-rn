@@ -9,17 +9,22 @@
  */
 
 import 'react-native-gesture-handler';
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import {Platform} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
 import {HomeScreen} from "./src/Screens/HomeScreen";
 import {CurrencyScreen} from './src/Screens/CurrencyScreen';
 import {TrackingScreen} from './src/Screens/TrackingScreen';
-import {MehesScreen} from './src/Screens/MehesScreen';
+import {SizeChartScreen} from './src/Screens/SizeChartScreen';
 import {FindzipScreen} from './src/Screens/FindzipScreen';
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {googleSignInConfigure} from "./src/utils/google-signin";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {ZipyIcon} from './src/components/icons/ZipyIcon';
+import {TrackingIcon} from './src/components/icons/TrackingIcon';
+import {SizeChartIcon} from './src/components/icons/SizeChartIcon';
+import {ZipCodeIcon} from './src/components/icons/ZipCodeIcon';
+import {CalculatorIcon} from './src/components/icons/CalculatorIcon';
+import {SvgProps} from "react-native-svg";
 
 declare const global: {HermesInternal: null | {}};
 
@@ -36,26 +41,32 @@ const App = () => {
           {Platform.OS === 'ios' ? (
               <NavigationContainer>
                   <Tab.Navigator
-                      initialRouteName='Buy Online'
+                      initialRouteName='ראשי'
                       screenOptions={({ route }) => ({
-                          tabBarIcon: ({ color, size }) => {
-                              let iconName: {[key: string]: string} = {
-                                  'Track': 'briefcase',
-                                  'Sizechart': 'list',
-                                  'Buy Online': 'globe',
-                                  'Customs': 'credit-card',
-                                  'Exchange': 'calculator',
+                          tabBarIcon: ({ color, size, focused }) => {
+                              let icons: {[key: string]: FC<SvgProps>} = {
+                                  'מעקב משלוחים': TrackingIcon,
+                                  'המרת מידות': SizeChartIcon,
+                                  'ראשי': ZipyIcon,
+                                  'איתור מיקוד': ZipCodeIcon,
+                                  'המרת מטבע': CalculatorIcon,
                               };
+                              const DynamicIcon = icons[route.name];
 
-                              return <Icon name={iconName[route.name]} size={size} color={color} />;
+                              return <DynamicIcon color={color} width={size} height={size} />;
                           },
                       })}
+                      tabBarOptions={{
+                          activeTintColor: '#7866ff',
+                          inactiveTintColor: '#8D8D8F',
+                      }}
+
                   >
-                      <Tab.Screen name="Track" component={TrackingScreen} />
-                      <Tab.Screen name="Sizechart" component={FindzipScreen} />
-                      <Tab.Screen name="Buy Online" component={HomeScreen} />
-                      <Tab.Screen name="Customs" component={MehesScreen} />
-                      <Tab.Screen name="Exchange" component={CurrencyScreen} />
+                      <Tab.Screen name="מעקב משלוחים" component={TrackingScreen} />
+                      <Tab.Screen name="המרת מידות" component={SizeChartScreen} />
+                      <Tab.Screen name="ראשי" component={HomeScreen} />
+                      <Tab.Screen name="איתור מיקוד" component={FindzipScreen} />
+                      <Tab.Screen name="המרת מטבע" component={CurrencyScreen} />
                   </Tab.Navigator>
               </NavigationContainer>
           ) : <HomeScreen/>}
