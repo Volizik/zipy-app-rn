@@ -2,9 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:ZipyRN.xcodeproj">
+      location = "group:/Users/admin/Documents/WebstormProjects/zipy-app-rn/ios/ZipyRN.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ZipyRN.xcodeproj">
    </FileRef>
 </Workspace>
