@@ -6,6 +6,7 @@ import {googleSignIn} from "../utils/google-signin";
 import {Loader} from "./Loader";
 import {SafeAreaView, StyleSheet} from "react-native";
 import CookieManager from '@react-native-community/cookies';
+import UserAgent from 'react-native-user-agent';
 
 export const WebViewCustom: FC<WebViewProps> = ({children, ...props}) => {
     const webViewRef = useRef<WebView>(null);
@@ -42,6 +43,7 @@ export const WebViewCustom: FC<WebViewProps> = ({children, ...props}) => {
                 injectedJavaScript={injectedJavascript}
                 onLoadStart={() => setIsLoading(true)}
                 onLoadEnd={() => setIsLoading(false)}
+                userAgent={UserAgent.getUserAgent()}
                 {...props}
             />
             {isLoading && (
