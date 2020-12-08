@@ -26,6 +26,7 @@ static void InitializeFlipper(UIApplication *application) {
 
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <UserNotifications/UserNotifications.h>
 
 
 @implementation AppDelegate
@@ -53,10 +54,73 @@ static void InitializeFlipper(UIApplication *application) {
   [GIDSignIn sharedInstance].clientID = @"163697187066-ftlnh870p6ajh43u3m8pcqr69e53dbp8.apps.googleusercontent.com";
   [GIDSignIn sharedInstance].delegate = self;
   
+        // Override point for customization after application launch.
+        /** APPSFLYER INIT **/
+        [AppsFlyerLib shared].appsFlyerDevKey = @"SjEvFgJ2r5haD2yXXeV46U";
+        [AppsFlyerLib shared].appleAppID = @"id1522906560";
+        [AppsFlyerLib shared].delegate = self;
+        /* Set isDebug to true to see AppsFlyer debug logs */
+        [AppsFlyerLib shared].isDebug = true;
+  if (@available(iOS 10, *)) {
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        center.delegate = self;
+        [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        }];
+  } else {
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes: UIUserNotificationTypeAlert | UIUserNotificationTypeSound | UIUserNotificationTypeBadge categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+  }
+  [[UIApplication sharedApplication] registerForRemoteNotifications];
+  
+  
   return YES;
 }
 
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [[AppsFlyerLib shared] start];
+}
+//// Deep linking
+//// Open URI-scheme for iOS 9 and above
+//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary *) options {
+//    [[AppsFlyerLib shared] handleOpenUrl:url options:options];
+//    return YES;
+//}
+// Open Universal Links
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
+    [[AppsFlyerLib shared] continueUserActivity:userActivity restorationHandler:restorationHandler];
+    return YES;
+}
+// Report Push Notification attribution data for re-engagements
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    [[AppsFlyerLib shared] handlePushNotification:userInfo];
+}
+// AppsFlyerLib implementation
+//Handle Conversion Data (Deferred Deep Link)
+-(void)onConversionDataSuccess:(NSDictionary*) installData {
+    id status = [installData objectForKey:@"af_status"];
+    if([status isEqualToString:@"Non-organic"]) {
+        id sourceID = [installData objectForKey:@"media_source"];
+        id campaign = [installData objectForKey:@"campaign"];
+        NSLog(@"This is a non-organic install. Media source: %@  Campaign: %@",sourceID,campaign);
+    } else if([status isEqualToString:@"Organic"]) {
+        NSLog(@"This is an organic install.");
+    }
+}
+-(void)onConversionDataFail:(NSError *) error {
+    NSLog(@"%@",error);
+}
+//Handle Direct Deep Link
+- (void) onAppOpenAttribution:(NSDictionary*) attributionData {
+    NSLog(@"%@",attributionData);
+}
+- (void) onAppOpenAttributionFailure:(NSError *)error {
+    NSLog(@"%@",error);
+}
+
+
 - (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options {
+  [[AppsFlyerLib shared] handleOpenUrl:url options:options];
   return [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options] ||
     [[GIDSignIn sharedInstance] handleURL:url];
 }
@@ -67,16 +131,6 @@ static void InitializeFlipper(UIApplication *application) {
          annotation:(id)annotation {
   return [[GIDSignIn sharedInstance] handleURL:url];
 }
-
-//- (BOOL)application:(UIApplication *)application
-//            openURL:(NSURL *)url
-//  sourceApplication:(NSString *)sourceApplication
-//         annotation:(id)annotation {
-//  return [[FBSDKApplicationDelegate sharedInstance] application:application
-//                                                         openURL:url
-//                                               sourceApplication:sourceApplication
-//                                                      annotation:annotation];
-//}
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {

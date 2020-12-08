@@ -80,6 +80,8 @@ target 'ZipyRN' do
   pod 'Firebase/Analytics'
   pod 'GoogleSignIn', '~> 5.0.2'
 
+  pod 'AppsFlyerFramework'
+
   target 'ZipyRNTests' do
     inherit! :complete
     # Pods for testing
