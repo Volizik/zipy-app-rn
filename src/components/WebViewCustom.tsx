@@ -1,57 +1,50 @@
 import React, {FC, useRef, useState} from 'react';
-import {WebView, WebViewMessageEvent, WebViewNavigation, WebViewProps} from 'react-native-webview';
-import {AuthType} from '../types';
-import {Loader} from "./Loader";
 import {SafeAreaView, StyleSheet} from "react-native";
+import {WebView, WebViewNavigation, WebViewProps} from 'react-native-webview';
 import UserAgent from 'react-native-user-agent';
-import {googleSignIn} from '../utils/google-signin';
-import {facebookSignIn} from '../utils/facebook-signin';
-import { HOME_URL } from 'react-native-dotenv';
+import { HOME_URL_DOMAIN } from 'react-native-dotenv';
+
+import {Loader} from "./Loader";
 
 const addParamsToUrl = (u: string): string => {
     let url = u;
+    const params = 'utm_medium=app&utm_source=app_ios&utm_zipy_version=3';
 
-    if (url.includes('utm_medium=app&utm_source=app_ios')) {
+    if (url.includes(params) || decodeURIComponent(url).includes(params)) {
         return url;
+    }
+
+    const paramsWithSymbol = url.includes('?') ? `&${params}` : `?${params}`;
+
+    // May be used only if url doesn't contain #
+    const addSlash = (url: string): string => {
+        if (url.includes('?')) {
+            const arr = url.split('?');
+            const firstPart = arr[0];
+
+            return `${firstPart[firstPart.length - 1] === '/' ? firstPart : `${firstPart}/`}?${arr[1]}`
+        }
+
+        return url[url.length - 1] === '/' ? url : `${url}/`
     }
 
     if (url.includes('#')) {
         const urlArray = url.split('#');
-        const params = url.includes('?') ? '&utm_medium=app&utm_source=app_ios' : '?utm_medium=app&utm_source=app_ios';
+
         if (urlArray.length === 1) {
             return url = urlArray[0]; // если после # ничего нет
         }
-        url = `${urlArray[0]}${params}#${urlArray[1]}`;
+        url = `${addSlash(urlArray[0])}${paramsWithSymbol}#${urlArray[1]}`;
         return url
     } else {
-        url += url.includes('?') ? '&utm_medium=app&utm_source=app_ios' : '?utm_medium=app&utm_source=app_ios';
-        return url;
+        return addSlash(url) + paramsWithSymbol;
     }
 }
 
 export const WebViewCustom: FC<WebViewProps> = ({children, ...props}) => {
     const webViewRef = useRef<WebView>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [currentURI, setURI] = useState((props.source && 'uri' in props.source && props.source.uri) || '');
-    const newSource = { ...props.source, uri: currentURI };
-
-    const onSocialLoginCallbackHandler = (type: AuthType) => (token: string) => {
-        if (type === 'googleLogin') {
-            webViewRef?.current?.injectJavaScript(`window.googleAuthByToken("${token}")`);
-        } else if (type === 'facebookLogin') {
-            webViewRef?.current?.injectJavaScript(`window.facebookAuthByToken("${token}")`);
-        }
-    }
-
-    const onMessageHandler = (event: WebViewMessageEvent) => {
-        const {type}: {type: AuthType} = JSON.parse(event.nativeEvent.data);
-
-        if (type === 'facebookLogin') {
-            facebookSignIn(onSocialLoginCallbackHandler(type));
-        } else if (type === 'googleLogin') {
-            googleSignIn(onSocialLoginCallbackHandler(type));
-        }
-    }
+    const [currentURI, setCurrentURI] = useState((props.source && 'uri' in props.source && props.source.uri) || '');
 
     const injectedJavascript = `
             document.documentElement.classList.add('zipy-mobile-app');
@@ -60,26 +53,26 @@ export const WebViewCustom: FC<WebViewProps> = ({children, ...props}) => {
     const onShouldStartLoadWithRequestHandler = (request: WebViewNavigation): boolean => {
         const newUri = request.mainDocumentURL;
 
-        if (newUri === `${HOME_URL}/#`) return false; // if anchor used like a button
+        setCurrentURI((prevUrl) => addParamsToUrl(newUri || prevUrl));
 
-        setURI((prevUrl) => addParamsToUrl(newUri || prevUrl));
-
-        return newUri === currentURI;
+        console.log(newUri)
+        return newUri?.split('?')[1] === currentURI.split('?')[1];
     }
+
 
     return (
         <SafeAreaView style={styles.wrapper} pointerEvents={isLoading ? 'none' : 'auto'}>
             <WebView
                 style={styles.webView}
                 ref={webViewRef}
-                onMessage={onMessageHandler}
+                allowsBackForwardNavigationGestures={true}
                 onShouldStartLoadWithRequest={onShouldStartLoadWithRequestHandler}
                 injectedJavaScript={injectedJavascript}
                 onLoadStart={() => setIsLoading(true)}
                 onLoadEnd={() => setIsLoading(false)}
                 userAgent={UserAgent.getUserAgent()}
                 {...props}
-                source={newSource}
+                source={{ ...props.source, uri: currentURI }}
             />
             {isLoading && (
                 <Loader />
