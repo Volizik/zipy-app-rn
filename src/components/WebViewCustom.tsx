@@ -41,23 +41,19 @@ export const WebViewCustom: FC<WebViewCustomProps> = ({children, source, ...prop
     const { addParamsToUrl, hasVersionParam, hasUtmParam } = useParamsToUrl();
     const [currentUrl, setCurrentUrl] = useState<string>(addParamsToUrl(source.uri));
 
-
-    const changeUrl = (url: string) => {
-        console.log('changed url', currentUrl)
-        const urlWithParams = addParamsToUrl(url);
-        if (url.split('?')[0].includes(HOME_URL_DOMAIN) && urlWithParams !== currentUrl) {
-            setCurrentUrl(urlWithParams);
-        }
-    }
-
     const onLoadStartHandler = ({nativeEvent: { url }}: WebViewNavigationEvent) => {
         if (!hasVersionParam(url) || !hasUtmParam(url)) {
             webViewRef.current?.stopLoading();
-            changeUrl(url)
+
+            const urlWithParams = addParamsToUrl(url);
+            if (url.split('?')[0].includes(HOME_URL_DOMAIN) && urlWithParams !== currentUrl) {
+                setCurrentUrl(urlWithParams);
+            }
         }
     }
 
     const onShouldStartLoadWithRequest = ({ url }: WebViewNavigation) => {
+        // reject zipy.co.il link if you are on this zipy.co.il, to escape redirect to v2
         return currentUrl.split('?')[0] !== url
     }
 
