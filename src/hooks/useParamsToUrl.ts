@@ -1,7 +1,7 @@
 export const useParamsToUrl = () => {
     const versionParam = "zipy_version=3";
     const utmParams = "utm_medium=app&utm_source=app_ios";
-    
+
     const addParamsToUrl = (url: string): string => {
         let params = "";
     
@@ -28,9 +28,12 @@ export const useParamsToUrl = () => {
 
     const hasVersionParam = (url: string) => url.includes(versionParam)
 
+    const hasUtmParam = (url: string) => url.includes(utmParams)
+
 
     return {
         addParamsToUrl,
         hasVersionParam,
+        hasUtmParam,
     }
 }

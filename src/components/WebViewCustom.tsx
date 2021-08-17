@@ -1,11 +1,11 @@
-import React, {FC, useRef, useState} from 'react';
+import React, {FC, memo, useRef, useState, forwardRef} from 'react';
 import {SafeAreaView, StyleSheet} from "react-native";
 import {WebView, WebViewNavigation, WebViewProps } from 'react-native-webview';
 import { WebViewNavigationEvent } from 'react-native-webview/lib/WebViewTypes';
 import UserAgent from 'react-native-user-agent';
 import { HOME_URL_DOMAIN } from 'react-native-dotenv';
 
-import {Loader} from "./Loader";
+import { Loader } from "./Loader";
 import { useParamsToUrl } from '../hooks/useParamsToUrl'
 
 interface WebViewCustomProps extends Omit<WebViewProps, 'source'> {
@@ -14,57 +14,60 @@ interface WebViewCustomProps extends Omit<WebViewProps, 'source'> {
     }
 }
 
+const injectedJavascript = `
+document.documentElement.classList.add('zipy-mobile-app');
+`;
+
+//TODO: fix rerender
+const MemoWebView = memo(forwardRef<WebView, WebViewCustomProps>((props, ref) => {
+    console.log('rerender')
+    return (
+        <WebView
+            style={styles.webView} 
+            allowsBackForwardNavigationGestures
+            ref={ref}
+            onMessage={() => {}}
+            injectedJavaScript={injectedJavascript}
+            userAgent={UserAgent.getUserAgent()}
+            startInLoadingState={true}
+            renderLoading={() => <Loader />}
+            {...props} 
+        />
+    )
+}));
+
 export const WebViewCustom: FC<WebViewCustomProps> = ({children, source, ...props}) => {
     const webViewRef = useRef<WebView>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const { addParamsToUrl, hasVersionParam } = useParamsToUrl();
-    const [currentURI, setCurrentURI] = useState<string>(addParamsToUrl(source.uri));
+    const { addParamsToUrl, hasVersionParam, hasUtmParam } = useParamsToUrl();
+    const [currentUrl, setCurrentUrl] = useState<string>(addParamsToUrl(source.uri));
 
-    const injectedJavascript = `
-            document.documentElement.classList.add('zipy-mobile-app');
-    `;
 
-    const setNewUrl = (url: string) => {
+    const changeUrl = (url: string) => {
+        console.log('changed url', currentUrl)
         const urlWithParams = addParamsToUrl(url);
-        if (url.includes(HOME_URL_DOMAIN) && urlWithParams !== currentURI) {
-            setCurrentURI(urlWithParams);
-        }
-    }
-
-    const onNavigaionStateChangeHandler = (state: WebViewNavigation) => {
-        console.log('state', state.url)
-        if (!hasVersionParam(state.url)) {
-            setNewUrl(state.url)
+        if (url.split('?')[0].includes(HOME_URL_DOMAIN) && urlWithParams !== currentUrl) {
+            setCurrentUrl(urlWithParams);
         }
     }
 
     const onLoadStartHandler = ({nativeEvent: { url }}: WebViewNavigationEvent) => {
-        console.log('onLoadStart ', url)
-        setNewUrl(url)
-        setIsLoading(true)
+        if (!hasVersionParam(url) || !hasUtmParam(url)) {
+            webViewRef.current?.stopLoading();
+            changeUrl(url)
+        }
     }
 
-    const onLoadEndHandler = () => {
-        setIsLoading(false)
+    const onShouldStartLoadWithRequest = ({ url }: WebViewNavigation) => {
+        return currentUrl.split('?')[0] !== url
     }
 
     return (
-        <SafeAreaView style={styles.wrapper} pointerEvents={isLoading ? 'none' : 'auto'}>
-            <WebView
-                style={styles.webView}
-                ref={webViewRef}
-                allowsBackForwardNavigationGestures
-                onNavigationStateChange={onNavigaionStateChangeHandler}
-                injectedJavaScript={injectedJavascript}
+        <SafeAreaView style={styles.wrapper}>
+            <MemoWebView
+                onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
                 onLoadStart={onLoadStartHandler}
-                onLoadEnd={onLoadEndHandler}
-                userAgent={UserAgent.getUserAgent()}
-                {...props}
-                source={{ uri: currentURI }}
+                source={{ uri: currentUrl }}
             />
-            {isLoading && (
-                <Loader />
-            )}
         </SafeAreaView>
     );
 }
