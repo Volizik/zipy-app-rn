@@ -23,9 +23,9 @@ const MemoWebView = memo(forwardRef<WebView, WebViewCustomProps>((props, ref) =>
     console.log('rerender')
     return (
         <WebView
-            style={styles.webView} 
-            allowsBackForwardNavigationGestures
+            style={styles.webView}
             ref={ref}
+            allowsBackForwardNavigationGestures={true}
             onMessage={() => {}}
             injectedJavaScript={injectedJavascript}
             userAgent={UserAgent.getUserAgent()}
