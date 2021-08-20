@@ -24,8 +24,6 @@ static void InitializeFlipper(UIApplication *application) {
 }
 #endif
 
-
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <UserNotifications/UserNotifications.h>
 
 
@@ -49,10 +47,6 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  [[FBSDKApplicationDelegate sharedInstance] application:application
-                           didFinishLaunchingWithOptions:launchOptions];
-  [GIDSignIn sharedInstance].clientID = @"163697187066-ftlnh870p6ajh43u3m8pcqr69e53dbp8.apps.googleusercontent.com";
-  [GIDSignIn sharedInstance].delegate = self;
   
         // Override point for customization after application launch.
         /** APPSFLYER INIT **/
@@ -116,20 +110,6 @@ static void InitializeFlipper(UIApplication *application) {
 }
 - (void) onAppOpenAttributionFailure:(NSError *)error {
     NSLog(@"%@",error);
-}
-
-
-- (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options {
-  [[AppsFlyerLib shared] handleOpenUrl:url options:options];
-  return [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options] ||
-    [[GIDSignIn sharedInstance] handleURL:url];
-}
-
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-  return [[GIDSignIn sharedInstance] handleURL:url];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
