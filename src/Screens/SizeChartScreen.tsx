@@ -1,12 +1,24 @@
 import React from 'react';
 import { HOME_URL } from 'react-native-dotenv';
+import { useIsFocused } from '@react-navigation/native';
 
 import {WebViewCustom} from "../components/WebViewCustom";
 
 export const SizeChartScreen = () => {
+    const uri = `${HOME_URL}/sizechart`;
+    const isFocused = useIsFocused();
+    const [key, setKey] = React.useState(Math.random())
+
+    React.useEffect(() => {
+        if (!isFocused) {
+            setKey(Math.random);
+        }
+    }, [isFocused])
+    
     return (
         <WebViewCustom
-            source={{ uri: `${HOME_URL}/sizechart` }}
+            key={key}
+            source={{ uri }}
         />
     );
 }

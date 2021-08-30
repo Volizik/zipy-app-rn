@@ -15,6 +15,7 @@ import {TrackingIcon} from './src/components/icons/TrackingIcon';
 import {SizeChartIcon} from './src/components/icons/SizeChartIcon';
 import {ZipCodeIcon} from './src/components/icons/ZipCodeIcon';
 import {CalculatorIcon} from './src/components/icons/CalculatorIcon';
+import { tabsNames } from './src/constants'
 
 declare const global: {HermesInternal: null | {}};
 
@@ -27,15 +28,15 @@ const App = () => {
           {Platform.OS === 'ios' ? (
               <NavigationContainer>
                   <Tab.Navigator
-                      initialRouteName='ראשי'
+                      initialRouteName={tabsNames.home}
                       screenOptions={({ route, navigation }) => ({
                           tabBarIcon: ({ color, size, focused }) => {
                               let icons: {[key: string]: FC<SvgProps>} = {
-                                  'מעקב משלוחים': TrackingIcon,
-                                  'המרת מידות': SizeChartIcon,
-                                  'ראשי': ZipyIcon,
-                                  'איתור מיקוד': ZipCodeIcon,
-                                  'המרת מטבע': CalculatorIcon,
+                                  [tabsNames.tracking]: TrackingIcon,
+                                  [tabsNames.sizeChart]: SizeChartIcon,
+                                  [tabsNames.home]: ZipyIcon,
+                                  [tabsNames.zipCode]: ZipCodeIcon,
+                                  [tabsNames.calculator]: CalculatorIcon,
                               };
                               const DynamicIcon = icons[route.name];
 
@@ -56,11 +57,11 @@ const App = () => {
                       }}
 
                   >
-                      <Tab.Screen name="מעקב משלוחים" component={TrackingScreen} />
-                      <Tab.Screen name="המרת מידות" component={SizeChartScreen} />
-                      <Tab.Screen name="ראשי" component={HomeScreen} />
-                      <Tab.Screen name="איתור מיקוד" component={FindzipScreen} />
-                      <Tab.Screen name="המרת מטבע" component={CurrencyScreen} />
+                      <Tab.Screen name={tabsNames.tracking} component={TrackingScreen} />
+                      <Tab.Screen name={tabsNames.sizeChart} component={SizeChartScreen} />
+                      <Tab.Screen name={tabsNames.home} component={HomeScreen} />
+                      <Tab.Screen name={tabsNames.zipCode} component={FindzipScreen} />
+                      <Tab.Screen name={tabsNames.calculator} component={CurrencyScreen} />
                   </Tab.Navigator>
               </NavigationContainer>
           ) : <HomeScreen/>}
