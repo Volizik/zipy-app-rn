@@ -18,24 +18,6 @@ const injectedJavascript = `
 document.documentElement.classList.add('zipy-mobile-app');
 `;
 
-//TODO: fix rerender
-const MemoWebView = memo(forwardRef<WebView, WebViewCustomProps>((props, ref) => {
-    console.log('rerender')
-    return (
-        <WebView
-            style={styles.webView}
-            ref={ref}
-            allowsBackForwardNavigationGestures={true}
-            onMessage={() => {}}
-            injectedJavaScript={injectedJavascript}
-            userAgent={UserAgent.getUserAgent()}
-            startInLoadingState={true}
-            renderLoading={() => <Loader />}
-            {...props} 
-        />
-    )
-}));
-
 export const WebViewCustom: FC<WebViewCustomProps> = ({children, source, ...props}) => {
     const webViewRef = useRef<WebView>(null);
     const { addParamsToUrl, hasVersionParam, hasUtmParam } = useParamsToUrl();
@@ -59,10 +41,20 @@ export const WebViewCustom: FC<WebViewCustomProps> = ({children, source, ...prop
 
     return (
         <SafeAreaView style={styles.wrapper}>
-            <MemoWebView
+            <WebView
+                style={styles.webView}
+                ref={webViewRef}
+                allowsBackForwardNavigationGestures={true}
+                onMessage={() => {}}
+                injectedJavaScript={injectedJavascript}
+                userAgent={UserAgent.getUserAgent()}
+                startInLoadingState={true}
+                renderLoading={() => <Loader />}
+                mixedContentMode="compatibility"
                 onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
                 onLoadStart={onLoadStartHandler}
                 source={{ uri: currentUrl }}
+                {...props}
             />
         </SafeAreaView>
     );

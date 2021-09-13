@@ -1,31 +1,31 @@
-import 'react-native-gesture-handler';
+// import 'react-native-gesture-handler';
 import React, {FC} from 'react';
-import {Platform} from "react-native";
-import {NavigationContainer} from "@react-navigation/native";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import {SvgProps} from "react-native-svg";
+// import {Platform} from "react-native";
+// import {NavigationContainer} from "@react-navigation/native";
+// import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+// import {SvgProps} from "react-native-svg";
 
 import {HomeScreen} from "./src/Screens/HomeScreen";
-import {CurrencyScreen} from './src/Screens/CurrencyScreen';
-import {TrackingScreen} from './src/Screens/TrackingScreen';
-import {SizeChartScreen} from './src/Screens/SizeChartScreen';
-import {FindzipScreen} from './src/Screens/FindzipScreen';
-import {ZipyIcon} from './src/components/icons/ZipyIcon';
-import {TrackingIcon} from './src/components/icons/TrackingIcon';
-import {SizeChartIcon} from './src/components/icons/SizeChartIcon';
-import {ZipCodeIcon} from './src/components/icons/ZipCodeIcon';
-import {CalculatorIcon} from './src/components/icons/CalculatorIcon';
-import { tabsNames } from './src/constants'
+// import {CurrencyScreen} from './src/Screens/CurrencyScreen';
+// import {TrackingScreen} from './src/Screens/TrackingScreen';
+// import {SizeChartScreen} from './src/Screens/SizeChartScreen';
+// import {FindzipScreen} from './src/Screens/FindzipScreen';
+// import {ZipyIcon} from './src/components/icons/ZipyIcon';
+// import {TrackingIcon} from './src/components/icons/TrackingIcon';
+// import {SizeChartIcon} from './src/components/icons/SizeChartIcon';
+// import {ZipCodeIcon} from './src/components/icons/ZipCodeIcon';
+// import {CalculatorIcon} from './src/components/icons/CalculatorIcon';
+// import { tabsNames } from './src/constants'
 
 declare const global: {HermesInternal: null | {}};
 
-const Tab = createBottomTabNavigator();
+// const Tab = createBottomTabNavigator();
 
 const App = () => {
 
   return (
       <>
-          {Platform.OS === 'ios' ? (
+          {/* {Platform.OS === 'ios' ? (
               <NavigationContainer>
                   <Tab.Navigator
                       initialRouteName={tabsNames.home}
@@ -63,8 +63,9 @@ const App = () => {
                       <Tab.Screen name={tabsNames.zipCode} component={FindzipScreen} />
                       <Tab.Screen name={tabsNames.calculator} component={CurrencyScreen} />
                   </Tab.Navigator>
-              </NavigationContainer>
-          ) : <HomeScreen/>}
+              </NavigationContainer> */}
+          {/* ) : <HomeScreen/>} */}
+          <HomeScreen/>
       </>
   )
 };
