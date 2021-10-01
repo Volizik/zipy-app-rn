@@ -340,6 +340,8 @@ PODS:
     - React
   - react-native-safe-area-context (0.7.3):
     - React
+  - react-native-tracking-transparency (0.1.1):
+    - React
   - react-native-user-agent (2.1.0):
     - React
   - react-native-webview (11.13.0):
@@ -465,6 +467,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - "react-native-cookies (from `../node_modules/@react-native-community/cookies`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-tracking-transparency (from `../node_modules/react-native-tracking-transparency`)
   - react-native-user-agent (from `../node_modules/react-native-user-agent`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -548,6 +551,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/cookies"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-tracking-transparency:
+    :path: "../node_modules/react-native-tracking-transparency"
   react-native-user-agent:
     :path: "../node_modules/react-native-user-agent"
   react-native-webview:
@@ -631,6 +636,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 500a59626037be5b3b3d89c5151bc3baa9abf1a9
   react-native-cookies: 7701c746be2c8f9ad73b2b8b6130efbfdbe1d145
   react-native-safe-area-context: 8260e5157617df4b72865f44006797f895b2ada7
+  react-native-tracking-transparency: d39c548f86b15315eb9d0532cff2a7d989085bee
   react-native-user-agent: 6ca9356042c87659876db9307109ebd653fd4429
   react-native-webview: b176c6404ad40d10cfc818be41c053f85a72d751
   React-perflogger: aad6d4b4a267936b3667260d1f649b6f6069a675
