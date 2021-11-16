@@ -3,7 +3,7 @@ import {SafeAreaView, StyleSheet} from "react-native";
 import {WebView, WebViewProps } from 'react-native-webview';
 import UserAgent from 'react-native-user-agent';
 
-import { Loader } from "./Loader";
+// import { Loader } from "./Loader";
 
 interface WebViewCustomProps extends Omit<WebViewProps, 'source'> {
     source: {
@@ -26,9 +26,8 @@ export const WebViewCustom: FC<WebViewCustomProps> = ({children, ...props}) => {
                 injectedJavaScript={injectedJavascript}
                 userAgent={UserAgent.getUserAgent().replace('ZipyRN', 'ZipyAppIOS')}
                 startInLoadingState={true}
-                renderLoading={() => <Loader />}
                 mixedContentMode="compatibility"
-                originWhitelist={['https://', 'file://']}
+                originWhitelist={['https://']}
                 {...props}
             />
         </SafeAreaView>

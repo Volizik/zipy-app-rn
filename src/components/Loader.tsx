@@ -5,7 +5,7 @@ import { WebView } from "react-native-webview";
 export const Loader: FC = () => {
     return (
         <View style={styles.wrapper} pointerEvents='none'>
-            <WebView style={styles.webview} source={require('./../assets/spinner.html')} />
+            <WebView style={styles.webview} source={require('../assets/spinner.html')} />
         </View>
     );
 }

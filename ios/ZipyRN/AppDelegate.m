@@ -3,6 +3,8 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
+#import <AdSupport/AdSupport.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -54,7 +56,17 @@ static void InitializeFlipper(UIApplication *application) {
         [AppsFlyerLib shared].appleAppID = @"id1522906560";
         [AppsFlyerLib shared].delegate = self;
         /* Set isDebug to true to see AppsFlyer debug logs */
-        [AppsFlyerLib shared].isDebug = true;
+        [AppsFlyerLib shared].isDebug = false;
+  
+  
+  if (@available(iOS 14, *))
+      {
+          [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+          // Tracking authorization completed. Start loading ads here.
+          // [self loadAd];
+        }];
+      }
+  
   if (@available(iOS 10, *)) {
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         center.delegate = self;
@@ -63,16 +75,25 @@ static void InitializeFlipper(UIApplication *application) {
   } else {
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes: UIUserNotificationTypeAlert | UIUserNotificationTypeSound | UIUserNotificationTypeBadge categories:nil];
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+    
   }
   [[UIApplication sharedApplication] registerForRemoteNotifications];
   
-  
+
   return YES;
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     [[AppsFlyerLib shared] start];
+  if (@available(iOS 15, *))
+      {
+          [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+          // Tracking authorization completed. Start loading ads here.
+          // [self loadAd];
+        }];
+  }
+  
 }
 //// Deep linking
 //// Open URI-scheme for iOS 9 and above
