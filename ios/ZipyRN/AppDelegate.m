@@ -59,14 +59,6 @@ static void InitializeFlipper(UIApplication *application) {
         [AppsFlyerLib shared].isDebug = false;
   
   
-  if (@available(iOS 14, *))
-      {
-          [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
-          // Tracking authorization completed. Start loading ads here.
-          // [self loadAd];
-        }];
-      }
-  
   if (@available(iOS 10, *)) {
         UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
         center.delegate = self;
@@ -86,13 +78,14 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     [[AppsFlyerLib shared] start];
-  if (@available(iOS 15, *))
-      {
-          [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
-          // Tracking authorization completed. Start loading ads here.
-          // [self loadAd];
-        }];
+  
+  if (@available(iOS 14, *)) {
+    [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+      // Tracking authorization completed. Start loading ads here.
+      // [self loadAd];
+    }];
   }
+  
   
 }
 //// Deep linking
