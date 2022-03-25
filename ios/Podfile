@@ -33,6 +33,10 @@ target 'ZipyRN' do
 
 end
 
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignalXCFramework', '>= 3.0', '< 4.0'
+end
+
 target 'ZipyRN-tvOS' do
   # Pods for ZipyRN-tvOS
 
@@ -41,3 +45,4 @@ target 'ZipyRN-tvOS' do
     # Pods for testing
   end
 end
+

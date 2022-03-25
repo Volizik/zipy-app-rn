@@ -7,10 +7,12 @@ export const useInAppUpdate = () => {
     const openAppStore = () => {
         const link = 'itms-apps://apps.apple.com/IL/app/zipy/id1522906560?l=he';
 
-        Linking.canOpenURL(link).then(
-          (supported) => supported && Linking.openURL(link),
-          (err) => console.log(err)
-        );
+        Linking.canOpenURL(link)
+            .then(
+            (supported) => supported ? Linking.openURL(link) : Alert.alert('resolve ', supported.toString()),
+            (err) => Alert.alert('rejected ', err.toString())
+            )
+            .catch((err) => Alert.alert('catch ', err.toString()))
       };
 
     useEffect(() => {
