@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Alert, Linking } from 'react-native';
-import Siren from 'react-native-siren'
+import DeviceInfo from 'react-native-device-info'
 
 export const useInAppUpdate = () => {
 
@@ -9,24 +9,45 @@ export const useInAppUpdate = () => {
 
         Linking.canOpenURL(link)
             .then(
-            (supported) => supported ? Linking.openURL(link) : Alert.alert('resolve ', supported.toString()),
-            (err) => Alert.alert('rejected ', err.toString())
+                (supported) => supported ? Linking.openURL(link) : Alert.alert('resolve ', supported.toString()),
+                (err) => Alert.alert('rejected ', err.toString())
             )
             .catch((err) => Alert.alert('catch ', err.toString()))
       };
 
+
     useEffect(() => {
-        Siren.performCheck({ country: 'IL' }).then(({ updateIsAvailable }) => {
-            if (updateIsAvailable) {
-                Alert.alert(
-                    'Update your app', 
-                    'This version contains a bug. You must update to be able to use our app.',
-                    [
-                        { text: "Cancel", style: "cancel" },
-                        { text: "Upgrade", onPress: openAppStore }
-                    ]
-                );
-            }
-        })
-    }, [])
+        try {
+            fetch('http://itunes.apple.com/lookup?bundleId=il.co.app.zipy&country=il', {
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then((response) => response.json())
+            .then((response) => {
+                if (response && 
+                    response.results && 
+                    response.results[0] && 
+                    response.results[0].version &&
+                    response.results[0].version !== DeviceInfo.getVersion()
+                    ) {
+                        Alert.alert(
+                            'Update your app',
+                            'This version contains a bug.',
+                            [
+                                {text: "Cancel", style: 'cancel'},
+                                {text: 'Update', onPress: openAppStore}
+                            ]
+                        )
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        } catch(error) {
+            console.error(error);
+        }
+    }, []);
 }

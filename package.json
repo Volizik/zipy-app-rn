@@ -25,7 +25,6 @@
     "react-native-reanimated": "^1.8.0",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.7.0",
-    "react-native-siren": "0.0.5",
     "react-native-svg": "^12.1.0",
     "react-native-tracking-transparency": "^0.1.1",
     "react-native-user-agent": "^2.1.0",
