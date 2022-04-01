@@ -66,8 +66,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location is required for improve the quality of our service for you</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Your location is required for improve the quality of our service for you</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>$(PRODUCT_NAME) requires your permission to track app usage in order to show you more relevant products.</string>
 	<key>UIAppFonts</key>

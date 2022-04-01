@@ -34,11 +34,11 @@ export const useInAppUpdate = () => {
                     response.results[0].version !== DeviceInfo.getVersion()
                     ) {
                         Alert.alert(
-                            'Update your app',
-                            'This version contains a bug.',
+                            'עדכון זמין לאפליקציה',
+                            'נא לוודא עדכון לגירסה האחרונה כדי ליהנות מכל התכונות והשיפורים באפליקציה',
                             [
-                                {text: "Cancel", style: 'cancel'},
-                                {text: 'Update', onPress: openAppStore}
+                                {text: "בטל", style: 'cancel'},
+                                {text: 'עדכן', onPress: openAppStore}
                             ]
                         )
                 }

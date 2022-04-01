@@ -856,7 +856,7 @@
 				CODE_SIGN_ENTITLEMENTS = ZipyRN/ZipyRNDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.17;
+				CURRENT_PROJECT_VERSION = 1.18;
 				DEVELOPMENT_TEAM = TJ4VMAZ3T2;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -867,7 +867,7 @@
 				INFOPLIST_FILE = ZipyRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.17;
+				MARKETING_VERSION = 1.18;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -893,13 +893,13 @@
 				CODE_SIGN_ENTITLEMENTS = ZipyRN/ZipyRN.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.17;
+				CURRENT_PROJECT_VERSION = 1.18;
 				DEVELOPMENT_TEAM = TJ4VMAZ3T2;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ZipyRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.17;
+				MARKETING_VERSION = 1.18;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1162,14 +1162,14 @@
 				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.17;
+				CURRENT_PROJECT_VERSION = 1.18;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = TJ4VMAZ3T2;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.17;
+				MARKETING_VERSION = 1.18;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = il.co.app.zipy.OneSignalNotificationServiceExtension;
@@ -1194,14 +1194,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.17;
+				CURRENT_PROJECT_VERSION = 1.18;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = TJ4VMAZ3T2;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.17;
+				MARKETING_VERSION = 1.18;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = il.co.app.zipy.OneSignalNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
