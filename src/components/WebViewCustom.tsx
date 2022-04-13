@@ -1,8 +1,10 @@
 import React, {FC} from 'react';
-import {SafeAreaView, StyleSheet} from "react-native";
+import {Alert, SafeAreaView, StyleSheet} from "react-native";
 import {WebView, WebViewProps } from 'react-native-webview';
 import UserAgent from 'react-native-user-agent';
 import OneSignal from 'react-native-onesignal'
+import { useRef } from 'react';
+import { useEffect } from 'react';
 
 interface WebViewCustomProps extends Omit<WebViewProps, 'source'> {
     source: {
@@ -14,15 +16,25 @@ const injectedJavascript = `
 document.documentElement.classList.add('zipy-mobile-app');
 `;
 
-const setIsMarketingPushesEnabled = (payload: boolean) => {
-    OneSignal.sendTag('marketingNotificationsEnabled', payload ? '1' : '0')
-}
-
-const messages: Record<string, (payload: any) => void> = {
-    setIsMarketingPushesEnabled,
-}
 
 export const WebViewCustom: FC<WebViewCustomProps> = ({children, ...props}) => {
+    const webViewRef = useRef<WebView | null>(null);
+    const tokenRef = useRef<string | null>(null)
+
+    const setIsMarketingPushesEnabled = (payload: boolean) => {
+        OneSignal.sendTag('marketingNotificationsEnabled', payload ? '1' : '0')
+    }
+
+    const getNotificationToken = () => {
+        if (tokenRef.current) {
+            webViewRef.current?.postMessage(JSON.stringify({type: 'onNotificationToken', payload: tokenRef.current}))
+        }
+    }
+
+    const messages: Record<string, (payload: any) => void> = {
+        setIsMarketingPushesEnabled,
+        getNotificationToken,
+    }
 
     const onMessageHandler = (event: any) => {
         const { data = '{}' } = event.nativeEvent || {};
@@ -30,9 +42,26 @@ export const WebViewCustom: FC<WebViewCustomProps> = ({children, ...props}) => {
         messages[type]?.(payload);
     }
 
+    useEffect(() => {
+        OneSignal.addSubscriptionObserver((state) => {
+            if (state.to?.userId) {
+                tokenRef.current = state.to.userId;
+            }
+            Alert.alert('addSubscriptionObserver', tokenRef.current?.toString())
+        });
+
+        OneSignal.getDeviceState().then((state) => {
+            if (!tokenRef.current && state?.userId) {
+                tokenRef.current = state.userId;
+            }
+            Alert.alert('getDeviceState', tokenRef.current?.toString())
+        })
+    }, [])
+
     return (
         <SafeAreaView style={styles.wrapper}>
             <WebView
+                ref={webViewRef}
                 style={styles.webView}
                 allowsBackForwardNavigationGestures={true}
                 onMessage={onMessageHandler}
