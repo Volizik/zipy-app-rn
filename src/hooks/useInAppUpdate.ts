@@ -9,10 +9,10 @@ export const useInAppUpdate = () => {
 
         Linking.canOpenURL(link)
             .then(
-                (supported) => supported ? Linking.openURL(link) : Alert.alert('resolve ', supported.toString()),
-                (err) => Alert.alert('rejected ', err.toString())
+                (supported) => supported && Linking.openURL(link),
+                // (err) => Alert.alert('rejected ', err.toString())
             )
-            .catch((err) => Alert.alert('catch ', err.toString()))
+            // .catch((err) => Alert.alert('catch ', err.toString()))
       };
 
 

@@ -1,10 +1,8 @@
-import React, {FC} from 'react';
+import React, {FC, useRef, useEffect } from 'react';
 import {Alert, SafeAreaView, StyleSheet} from "react-native";
 import {WebView, WebViewProps } from 'react-native-webview';
 import UserAgent from 'react-native-user-agent';
-import OneSignal from 'react-native-onesignal'
-import { useRef } from 'react';
-import { useEffect } from 'react';
+import OneSignal from 'react-native-onesignal';
 
 interface WebViewCustomProps extends Omit<WebViewProps, 'source'> {
     source: {
@@ -47,14 +45,12 @@ export const WebViewCustom: FC<WebViewCustomProps> = ({children, ...props}) => {
             if (state.to?.userId) {
                 tokenRef.current = state.to.userId;
             }
-            Alert.alert('addSubscriptionObserver', tokenRef.current?.toString())
         });
 
         OneSignal.getDeviceState().then((state) => {
             if (!tokenRef.current && state?.userId) {
                 tokenRef.current = state.userId;
             }
-            Alert.alert('getDeviceState', tokenRef.current?.toString())
         })
     }, [])
 
